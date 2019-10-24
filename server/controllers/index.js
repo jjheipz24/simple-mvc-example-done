@@ -307,14 +307,15 @@ const createDog = (req, res) => {
     return res;
 };
 
+//Finds the dog that the user inputs and then ages it by one year
 const ageDog = (req, res) => {
-    if (!req.query.name) {
+    if (!req.body.name) {
         return res.json({
             error: 'Name is required to perform a search',
         });
     }
 
-    return Dog.findByName(req.query.name, (err, doc) => {
+    return Dog.findByName(req.body.name, (err, doc) => {
         if (err) {
             return res.json({
                 err,
@@ -328,26 +329,22 @@ const ageDog = (req, res) => {
         }
 
         // if a match, send the match back
-        lastDogAdded.age++;
+        doc.age++;
 
-        const savePromise = lastDogAdded.save();
+        const savePromise = doc.save();
 
         // send back the name as a success for now
         savePromise.then(() => res.json({
-            name: lastDogAdded.name,
-            breed: lastDogAdded.breed,
-            age: lastDogAdded.age,
+            name: doc.name,
+            breed: doc.breed,
+            age: doc.age,
         }));
 
         //    savePromise.catch((err) => res.json({
         //      err,
         //    }));
 
-        return res.json({
-            name: doc.name,
-            breed: doc.breed,
-            age: doc.age,
-        });
+        return
     });
 };
 
