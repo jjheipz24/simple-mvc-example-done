@@ -350,7 +350,8 @@ const ageDog = (req, res) => {
     }
 
     // if a match, send the match back
-    doc.age++;
+    let newAge = doc.age;
+    newAge++;
 
     const savePromise = doc.save();
 
@@ -358,8 +359,14 @@ const ageDog = (req, res) => {
     savePromise.then(() => res.json({
       name: doc.name,
       breed: doc.breed,
-      age: doc.age,
+      age: newAge,
     }));
+
+    return res.json({
+      name: doc.name,
+      breed: doc.breed,
+      age: newAge,
+    });
   });
 };
 
